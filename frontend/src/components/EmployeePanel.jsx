@@ -217,16 +217,16 @@ const EmployeePanel = () => {
 
             <Row className="mb-3">
               <Col>
-                <Button variant="success" onClick={captureAndCheckIn}>Check In with Selfie</Button>
+                <Button variant="success" onClick={captureAndCheckIn}>Check In </Button>
               </Col>
               <Col>
-                <Button variant="warning" onClick={captureAndBreakIn}>Break In (optional photo)</Button>
+                <Button variant="warning" onClick={captureAndBreakIn}>Break In </Button>
               </Col>
               <Col>
-                <Button variant="info" onClick={captureAndBreakOut}>Break Out (optional photo)</Button>
+                <Button variant="info" onClick={captureAndBreakOut}>Break Out </Button>
               </Col>
               <Col>
-                <Button variant="danger" onClick={captureAndCheckOut}>Check Out with Selfie</Button>
+                <Button variant="danger" onClick={captureAndCheckOut}>Check Out </Button>
               </Col>
             </Row>
 
