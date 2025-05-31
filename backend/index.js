@@ -9,6 +9,7 @@ const path = require('path');
 const auth = require('./middlewares/auth'); // Correct path to auth middleware
 const employeeRoutes = require('./routes/employee');
 const adminRoutes = require('./routes/admin');
+const moment = require('moment-timezone');
 
 dotenv.config();
 
@@ -32,7 +33,8 @@ app.use(
 
 // ✅ ADDITION: Middleware to log all incoming requests
 app.use((req, res, next) => {
-  console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.url}`);
+  const nowIST = moment().tz('Asia/Kolkata').format('HH:mm:ss');
+  console.log(`[${nowIST}] ${req.method} ${req.url}`);
   next();
 });
 

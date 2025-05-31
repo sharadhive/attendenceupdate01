@@ -5,10 +5,11 @@ const Attendance = require('../models/Attendance');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('../middlewares/auth');
+const moment = require('moment-timezone'); 
 
 // Helper to get IST time
 const getISTTime = () => {
-  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  return moment.tz('Asia/Kolkata').toDate();
 };
 
 // Employee Login
