@@ -14,13 +14,13 @@ const EmployeePanel = () => {
   const [attendance, setAttendance] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [actionMessage, setActionMessage] = useState(''); // ✅ new
   const webcamRef = useRef(null);
 
-  // ✅ Simple and cross-browser friendly selfie camera constraints
   const videoConstraints = {
     width: { ideal: 640 },
     height: { ideal: 480 },
-    facingMode: { ideal: 'user' }, 
+    facingMode: { ideal: 'user' },
   };
 
   const getApi = () =>
@@ -101,6 +101,11 @@ const EmployeePanel = () => {
     return await uploadToCloudinary(blob);
   };
 
+  const showTemporaryActionMessage = (msg) => {
+    setActionMessage(msg);
+    setTimeout(() => setActionMessage(''), 3000);
+  };
+
   const captureAndCheckIn = async () => {
     try {
       const uploadedUrl = await captureImage();
@@ -110,6 +115,7 @@ const EmployeePanel = () => {
       await api.post('/checkin', { photoUrl: uploadedUrl });
       setPhotoUrl(uploadedUrl);
       setMessage('Checked in successfully');
+      showTemporaryActionMessage('Check-In Successful'); // ✅
       setError('');
       fetchAttendance();
     } catch (err) {
@@ -128,6 +134,7 @@ const EmployeePanel = () => {
       await api.post('/checkout', { photoUrl: uploadedUrl });
       setPhotoUrl(uploadedUrl);
       setMessage('Checked out successfully');
+      showTemporaryActionMessage('Check-Out Successful'); // ✅
       setError('');
       fetchAttendance();
     } catch (err) {
@@ -143,6 +150,7 @@ const EmployeePanel = () => {
       const api = getApi();
       await api.post('/breakin', { photoUrl: uploadedUrl });
       setMessage('Break in recorded');
+      showTemporaryActionMessage('Break-In Successful'); // ✅
       setError('');
       fetchAttendance();
     } catch (err) {
@@ -158,6 +166,7 @@ const EmployeePanel = () => {
       const api = getApi();
       await api.post('/breakout', { photoUrl: uploadedUrl });
       setMessage('Break out recorded');
+      showTemporaryActionMessage('Break-Out Successful'); // ✅
       setError('');
       fetchAttendance();
     } catch (err) {
@@ -206,14 +215,32 @@ const EmployeePanel = () => {
 
         {token && (
           <>
-            {/* ✅ Working webcam preview */}
-            <Webcam
-              audio={false}
-              ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              style={{ width: '100%', borderRadius: '10px', marginBottom: '16px' }}
-            />
+            {/* ✅ Webcam with overlay */}
+            <div style={{ position: 'relative' }}>
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+                style={{ width: '100%', borderRadius: '10px', marginBottom: '16px' }}
+              />
+              {actionMessage && (
+                <div style={{
+                  position: 'absolute',
+                  top: 10,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  backgroundColor: 'rgba(0, 128, 0, 0.8)',
+                  color: 'white',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  fontWeight: 'bold',
+                  zIndex: 10
+                }}>
+                  {actionMessage}
+                </div>
+              )}
+            </div>
 
             <Row className="mb-3">
               <Col>
