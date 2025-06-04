@@ -78,7 +78,7 @@ function AdminPanel() {
 
   const createBranch = async () => {
     try {
-      await axios.post('https://attendenceupdate01-2.onrender.com/api/admin/register-branch', {
+      await axios.post('https://attendenceupdate01.onrender.com/api/admin/register-branch', {
         branchName: newBranchName,
         password: newBranchPassword,
       }, {
