@@ -129,7 +129,25 @@ router.post('/breakout', auth, async (req, res) => {
   res.send('Break-out recorded');
 });
 
+/// update password
+router.put('/update-password', auth, async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
 
+  if (!oldPassword || !newPassword) {
+    return res.status(400).send('Old password and new password are required');
+  }
+
+  const employee = await Employee.findById(req.user._id);
+  if (!employee) return res.status(404).send('Employee not found');
+
+  const isValid = await bcrypt.compare(oldPassword, employee.password);
+  if (!isValid) return res.status(400).send('Invalid old password');
+
+  employee.password = await bcrypt.hash(newPassword, 10);
+  await employee.save();
+
+  res.send('Password updated successfully');
+});
 
 
 
